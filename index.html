@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crud-crud assessment</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div>
+        <!-- <form id="myForm">
+            <div class="lebels">
+                <label>Item Name</label>
+                <label>Description</label>
+                <label>Price</label>
+                <label>Quantity</label>
+            </div>
+            <div class="inputs">
+                <input type="text" id="itemName" placeholder="enter item name" />
+                <input type="text" id="description" placeholder="description" />
+                <input type="number" id="price" placeholder="Price" />
+                <input type="number" id="Quantity" placeholder="enter Quantity" />
+                <input type="button" id="sumbit" value="Add Item" />
+            </div> -->
+           <form id="itemForm">
+            <table>
+                <tr>
+                    <td>  Item Name</td>
+                    <td>Description</td>
+                    <td>Price</td>
+                    <td>Quantity </td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="name" id="name"></td>
+                    <td><input type="text" name="description" id="description"></td>
+                    <td><input type="number" name="Price" id="Price"></td>
+                    <td><input type="number" name="Quantity" id="Quantity"></td>
+                    <td><input type="button" id="addItm" value="Add Item"></td>
+
+                </tr>
+            </table>
+           </form>
+            <div class="list">
+                <ul>
+
+                </ul>
+            </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
