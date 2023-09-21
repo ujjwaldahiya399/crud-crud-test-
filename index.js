@@ -13,34 +13,37 @@ function submitForm() {
         const formData = {
           Itmname:Itmname,
           description:description,
-          price:price,
-          quantity:quantity
+          quantity:quantity,
+          price:price
         };
   
-        
-        axios.post('url', formData) // my crud crud api has reached it's daily subscription limit.
-        .then(response => response.data)
+        let url  = "https://crudcrud.com/api/750b615c1c274ff0b4e324934ede8afa";
+        axios.post("https://crudcrud.com/api/750b615c1c274ff0b4e324934ede8afa/posts", formData)
+         // my crud crud api has reached it's daily subscription limit.
         .then(data => {
           // Render the form data on the screen as an li
-          renderItmInfo(data);
+          renderItmInfo(data.data,null);
         })
         .catch(error => console.error('Error:', error));
 }
-function renderItmInfo(data) {
+async function renderItmInfo(data) {
     const ItmList = document.querySelector("ul");
-
-    // Create a new list item with the student information
+    console.log(data)
+    // Create a new list item with the item information
     const listItem = document.createElement("li");
     const id = data._id;
     listItem.setAttribute("data-id", id);
-    listItem.textContent = ` ${data.Itmname}  ${data.description}  ${data.price}  ${data.quantity}`;
-
+    console.log(data)
+    listItem.textContent = ` ${data.Itmname}  ${data.description}  ${data.price}  ${data.quantity} `;
+    console.log(listItem);
     // Create a button to decrease Item number by 1
     const decreaseBy1Button = document.createElement("button");
     decreaseBy1Button.textContent = "Buy 1";
-    const parentId = decreaseBy1Button.parentElement.id;
-    decreaseBy1Button.onclick = () => decreaseItmBy1(data.quantity, listItem,parentId);
+    listItem.appendChild(decreaseBy1Button);
 
+    const parentId =  data._id;
+    decreaseBy1Button.onclick = () => decreaseItmBy1(data.quantity, listItem,parentId);
+    console.log(parentId)
     // Create a button to decrease Item number by 2
     const decreaseBy2Button = document.createElement("button");
     decreaseBy2Button.textContent = "Buy 2";
@@ -51,7 +54,7 @@ function renderItmInfo(data) {
     decreaseBy3Button.textContent = "Buy 3";
     decreaseBy3Button.onclick = () => decreaseItmBy3(data.quantity, listItem,parentId);
     // Append the button to the list item
-    listItem.appendChild(decreaseBy1Button);
+    // listItem.appendChild(decreaseBy1Button);
     listItem.appendChild(decreaseBy2Button);
     listItem.appendChild(decreaseBy3Button);
 
@@ -59,46 +62,54 @@ function renderItmInfo(data) {
     ItmList.appendChild(listItem);
   }
 
-  function decreaseItmBy1(quantity, listItem,parentId) {
+  async function decreaseItmBy1(quantity, listItem,parentId) {
+    let url = "https://crudcrud.com/api/750b615c1c274ff0b4e324934ede8afa"
+    console.log(quantity,listItem,parentId);
     const newItemNo = parseInt(quantity) - 1;
-
+    console.log(quantity,newItemNo)
     // Update the list item's text content with the new Item number
+    console.log(listItem.textContent)
     listItem.textContent = listItem.textContent.replace(` ${quantity}`, ` ${newItemNo}`);
-
-    axios.put(`url/${parentId}`, {quantity: newItemNo})
-    axios.get(`url/${parentId}`) // i have react daily maximum limit
+    console.log(listItem.textContent)
+    await axios.patch(`${url}/posts/${parentId}`, {quantity: newItemNo})
+    axios.get(`${url}/posts/${parentId}`) // i have react daily maximum limit
     .then(response => response.data)
-    .then(data => {
+    .then( data => {
       // Update the Item number in the listItem if the backend operation is successful
-      listItem.textContent = listItem.textContent.replace( `${quantity}`, ` ${data.quantity}` );
+      // listItem.textContent = listItem.textContent.replace( `${quantity}`, ` ${data.quantity}` );
+      console.log(data)
+      // listItem.textContent = listItem.textContent.replace(` ${quantity}`, ` ${newItemNo}`);
+      renderItmInfo(data)
+
+      // console.log(data)
     })
     .catch(error => console.error('Error:', error));
   }
 
-  function decreaseItmBy2(quantity, listItem) {
+  async function decreaseItmBy2(quantity, listItem) {
     const newItemNo = parseInt(quantity) - 2;
 
     // Update the list item's text content with the new Item number
     listItem.textContent = listItem.textContent.replace(` ${quantity}`, ` ${newItemNo}`);
 
-    axios.put(`url/${parentId}`, {quantity: newItemNo})
-    axios.get(`url/${parentId}`) // i have react daily maximum limit
+    await axios.put(`url/posts/${parentId}`, {quantity: newItemNo})
+    axios.get(`url/posts/${parentId}`) // i have react daily maximum limit
     .then(response => response.data)
     .then(data => {
       // Update the Item number in the listItem if the backend operation is successful
-      listItem.textContent = listItem.textContent.replace( `${quantity}`, ` ${data.quantity}` );
+      listItem.textContent = listItem.textContent.replace( `${quantity}`, ` ${newItemNo}` );
     })
     .catch(error => console.error('Error:', error));
   }
 
-  function decreaseItmBy3(quantity, listItem) {
+  async function decreaseItmBy3(quantity, listItem) {
     const newItemNo = parseInt(quantity) - 3;
 
     // Update the list item's text content with the new Item number
     listItem.textContent = listItem.textContent.replace(` ${quantity}`, ` ${newItemNo}`);
 
-    axios.put(`url/${parentId}`, {quantity: newItemNo})
-    axios.get(`url/${parentId}`) // i have react daily maximum limit
+    await axios.put(`url/posts/${parentId}`, {quantity: newItemNo})
+    axios.get(`url/posts/${parentId}`) // i have reached daily maximum limit
     .then(response => response.data)
     .then(data => {
       // Update the Item number in the listItem if the backend operation is successful
